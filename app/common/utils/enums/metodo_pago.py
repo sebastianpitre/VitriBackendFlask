@@ -1,0 +1,9 @@
+from enum import Enum as PyEnum
+
+class MetodoPago(PyEnum):
+
+    EFECTIVO = "EFECTIVO" 
+    CONSIGNACIÓN =  "CONSIGNACION" 
+    TARJETA_CREDITO = "TARJETA_CREDITO" 
+    TARJETA_DEBITO = "TARJETA_DEBITO" 
+    BILLETERA_DIGITAL = "BILLETERA_DIGITAL"

@@ -17,20 +17,19 @@ class Productos(Base):
     precio: Mapped[float] = mapped_column(Float, nullable=False)
     is_promocion: Mapped[bool] = mapped_column(Boolean, nullable=False)
     stock: Mapped[int] = mapped_column(Integer, nullable=False)
-    is_activo: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_activo: Mapped[bool] = mapped_column(Boolean, nullable=True)
     descuento: Mapped[float] = mapped_column(Numeric(10, 2))
     fecha_inicio_descuento: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     fecha_fin_descuento: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     fecha_creacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     fecha_actualizacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-
+    id_categorias: Mapped[int] = mapped_column(ForeignKey("categorias.id_categorias"))
+    id_usuarios: Mapped[int] = mapped_column(ForeignKey("usuarios.id_usuarios"))
     #----------------------------------------------------------------------------------------------#
     # RELACIONES 
     # Reladcion uno a muchos entre categorias y productos
-    id_categorias: Mapped[int] = mapped_column(ForeignKey("categorias.id_categorias"))
     categorias: Mapped["Categorias"] = relationship( back_populates="productos") # type: ignore
     # Reladcion uno a muchos entre usuarios y productos
-    id_usuarios: Mapped[int] = mapped_column(ForeignKey("usuarios.id_usuarios"))
     usuarios: Mapped["Usuarios"] = relationship(back_populates="productos") # type: ignore
     # Reladcion uno a muchos entre pedidos_productos y productos
     pedidos_productos: Mapped[list["PedidosProductos"]] = relationship(back_populates="productos") # type: ignore # type: ignore
@@ -39,7 +38,7 @@ class Productos(Base):
     def set_initial_values(self):
         self.is_activo = True
 
-    def __init__(self, sku, nombre, descripcion, url_imagen, url_ficha_tecnica, unidad_producto, cantidad, precio, is_promocion, stock, is_activo, descuento):
+    def __init__(self, sku, nombre, descripcion, url_imagen, url_ficha_tecnica, unidad_producto, cantidad, precio, is_promocion, stock, descuento, id_categorias, id_usuarios):
         self.sku = sku
         self.nombre = nombre
         self.descripcion = descripcion
@@ -50,8 +49,9 @@ class Productos(Base):
         self.precio = precio
         self.is_promocion = is_promocion
         self.stock = stock
-        self.is_activo = is_activo
         self.descuento = descuento
+        self.id_categorias = id_categorias
+        self.id_usuarios = id_usuarios
 
     def __repr__(self):
         return f'<SKU {self.sku!r}>, <Nombre {self.nombre!r}, <URLImagen {self.url_imagen!r}, <URLFichaTecnica {self.url_ficha_tecnica!r}, <UnidadProducto {self.unidad_producto!r}, <Cantidad {self.cantidad!r}, <Precio {self.precio!r},<IsPromocion {self.is_promocion!r},<IsStock {self.stock!r},<IsActivo {self.is_activo!r}, <Descuento {self.descuento!r}, <FechaInicioDescuento {self.fecha_inicio_descuento!r}, <FechaFinDescuento {self.fecha_fin_descuento!r}>'

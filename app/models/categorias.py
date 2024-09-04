@@ -19,11 +19,10 @@ class Categorias(Base):
     productos: Mapped[list["Productos"]] = relationship( back_populates="categorias", cascade="all, delete-orphan") # type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, nombre, descripcion, url_imagen, is_activo):
+    def __init__(self, nombre, descripcion, url_imagen):
         self.nombre = nombre
         self.descripcion = descripcion
         self.url_imagen = url_imagen
-        self.is_activo = is_activo
 
     def __repr__(self):
         return f'<Nombre {self.nombre!r}, <Descripcion {self.descripcion!r}, <URLImagen {self.url_imagen!r}, <IsActivo {self.is_activo!r}>'

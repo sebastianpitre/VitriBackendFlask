@@ -35,11 +35,13 @@ class Usuarios(Base):
         self.is_activo = True
 
 # 
-    def __init__(self, nombres, apellidos, password, tipo_identificacion, identificacion, telefono, direccion, barrio, ciudad, is_activo):
+    def __init__(self, nombres, apellidos, email, password, rol, tipo_identificacion, identificacion, telefono, direccion, barrio, ciudad, is_activo):
         
         self.nombres = nombres
         self.apellidos = apellidos
+        self.email = email
         self.password = password
+        self.rol = rol
         self.tipo_identificacion = tipo_identificacion
         self.identificacion = identificacion
         self.telefono = telefono
@@ -47,6 +49,7 @@ class Usuarios(Base):
         self.barrio = barrio
         self.ciudad = ciudad
         self.is_activo = is_activo
+
 
     def __repr__(self):
         return f'<Nombres {self.nombres!r}>, <Apellidos {self.apellidos!r}, <Password {self.password!r}, <TipoIdentificacion {self.tipo_identificacion!r}, <Identificacion {self.identificacion!r}, <Telefono {self.telefono!r}, <Direccion {self.direccion!r},<Barrio {self.barrio!r},<Ciudad {self.ciudad!r},<IsActivo {self.is_activo!r},<IsStock {self.stock!r},<IsActivo {self.isActivo!r}>'

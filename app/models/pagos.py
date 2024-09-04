@@ -11,7 +11,6 @@ class Pagos(Base):
     monto: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     numero_transaccion: Mapped[str] = mapped_column(String(255))
     fecha_pago: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
-
     #----------------------------------------------------------------------------------------------#
     # RELACIONES 
     # Reladcion uno a muchos entre pedidos y pedidos_productos

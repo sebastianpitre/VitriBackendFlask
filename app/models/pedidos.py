@@ -8,27 +8,30 @@ class Pedidos(Base):
     __tablename__ = 'pedidos'
 
     id_pedidos: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(String(255), nullable=False)
     monto_total: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     estado_pedido: Mapped[EstadoPedido] = mapped_column(Enum(EstadoPedido), nullable=False)
     fecha_creacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
+    id_usuarios: Mapped[int] = mapped_column(ForeignKey("usuarios.id_usuarios"))
+    id_pagos: Mapped[int] = mapped_column(ForeignKey("pagos.id_pagos"))
 
+    def obtener_total_precio_pedido(self) -> float:
+        return sum(producto.get_total_producto() for producto in self.pedido_productos)
     #----------------------------------------------------------------------------------------------#
     # RELACIONES 
     # Reladcion uno a muchos entre usuarios y pedidos
-    id_usuarios: Mapped[int] = mapped_column(ForeignKey("usuarios.id_usuarios"))
     usuarios: Mapped["Usuarios"] = relationship(back_populates="pedidos") # type: ignore
     # Reladcion uno a muchos entre pedidos y productos
     pedidos_productos: Mapped[list["PedidosProductos"]] = relationship(back_populates="pedidos") # type: ignore
     # Reladcion uno a muchos entre pagos y pedidos
-    id_pagos: Mapped[int] = mapped_column(ForeignKey("pagos.id_pagos"))
     pagos: Mapped["Pagos"] = relationship(back_populates="pedidos") # type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, email, monto_total, estado_pedido):
+    def __init__(self, email, monto_total, estado_pedido, id_usuarios, id_pagos):
         self.email = email
         self.monto_total = monto_total
         self.estado_pedido = estado_pedido
+        self.id_usuarios = id_usuarios
+        self.id_pagos = id_pagos
 
     def __repr__(self):
         return f'<id {self.id!r}>, <email {self.email!r}, <monto_total {self.monto_total!r}, <estado_pedido {self.estado_pedido!r}>'

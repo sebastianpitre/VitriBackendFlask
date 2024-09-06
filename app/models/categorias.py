@@ -10,7 +10,7 @@ class Categorias(Base):
     url_imagen: Mapped[str] = mapped_column(String(255))
     fecha_creacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     fecha_actualizacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-    is_activo: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     
     #----------------------------------------------------------------------------------------------#
     # RELACIONES
@@ -18,9 +18,13 @@ class Categorias(Base):
     productos: Mapped[list["Productos"]] = relationship( back_populates="categorias", cascade="all, delete-orphan") # type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, nombre,  url_imagen):
-        self.nombre = nombre
-        self.url_imagen = url_imagen
+    def to_dict(self):
+        return {
+            "nombre": self.nombre,
+            "url_imagen": self.url_imagen,
+            "fecha_creacion": self.fecha_creacion,
+            "fecha_actualizacion": self.fecha_actualizacion
+        }
 
     def __repr__(self):
         return f'<Nombre {self.nombre!r}, <Descripcion {self.descripcion!r}, <URLImagen {self.url_imagen!r}, <IsActivo {self.is_activo!r}>'

@@ -25,11 +25,15 @@ class PedidosProductos(Base):
     productos: Mapped["Productos"] = relationship(back_populates="pedidos_productos") #type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, cantidad, precio, id_pedidos, id_productos):
-        self.cantidad = cantidad
-        self.precio = precio
-        self.id_pedidos = id_pedidos
-        self.id_productos = id_productos
+    def __todict__(self):
+        return {
+            'cantidad': self.cantidad,
+            'precio': self.precio,
+            'fecha_creacion': self.fecha_creacion,
+            'fecha_actualizacion': self.fecha_actualizacion,
+            'id_pedidos': self.id_pedidos,
+            'id_productos': self.id_productos
+        }
 
     def __repr__(self):
         return f'<id {self.id!r}>, <cantidad {self.cantidad!r}, <precio {self.precio!r}>'

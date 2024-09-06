@@ -26,12 +26,14 @@ class Pedidos(Base):
     pagos: Mapped["Pagos"] = relationship(back_populates="pedidos") # type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, email, monto_total, estado_pedido, id_usuarios, id_pagos):
-        self.email = email
-        self.monto_total = monto_total
-        self.estado_pedido = estado_pedido
-        self.id_usuarios = id_usuarios
-        self.id_pagos = id_pagos
+    def __todict__(self):
+        return {
+            "email": self.email,
+            "monto_total": self.monto_total,
+            "estado_pedido": self.estado_pedido.name,
+            "id_pagos": self.id_pagos,
+            "id_usuarios": self.id_usuarios
+        }    
 
     def __repr__(self):
         return f'<id {self.id!r}>, <email {self.email!r}, <monto_total {self.monto_total!r}, <estado_pedido {self.estado_pedido!r}>'

@@ -32,14 +32,16 @@ def obtener_usuarios():
                       'apellidos': usuario.apellidos,
                       'email': usuario.email,
                       'password': usuario.password,
-                      'rol': usuario.rol,
-                      'tipo_identificacion': usuario.rol,
+                      'rol': usuario.rol.name,
+                      'tipo_identificacion': usuario.tipo_identificacion.name,
                       'identificacion': usuario.identificacion,
                       'telefono': usuario.telefono,
                       'direccion': usuario.direccion,
                       'barrio': usuario.barrio,
                       'ciudad': usuario.ciudad,
-                      'is_activo': usuario.is_activo} 
+                      'is_activo': usuario.is_activo,
+                      'fecha_creacion': usuario.fecha_creacion,
+                    'fecha_actualizacion': usuario.fecha_actualizacion} 
                     for usuario in usuarios]
     return jsonify(lista_usuarios)
 
@@ -49,18 +51,20 @@ def obtener_usuario_por_id(id):
     if not usuario:
         return jsonify({'message': 'usuario no encontrado'}), 404
     return jsonify({'id_usuarios': usuario.id_usuarios,
-                      'nombres': usuario.nombres,
-                      'apellidos': usuario.apellidos,
-                      'email': usuario.email,
-                      'password': usuario.password,
-                      'rol': usuario.rol,
-                      'tipo_identificacion': usuario.rol,
-                      'identificacion': usuario.identificacion,
-                      'telefono': usuario.telefono,
-                      'direccion': usuario.direccion,
-                      'barrio': usuario.barrio,
-                      'ciudad': usuario.ciudad,
-                      'is_activo': usuario.is_activo})
+                    'nombres': usuario.nombres,
+                    'apellidos': usuario.apellidos,
+                    'email': usuario.email,
+                    'password': usuario.password,
+                    'rol': usuario.rol,
+                    'tipo_identificacion': usuario.tipo_identificacion.name,
+                    'identificacion': usuario.identificacion.name,
+                    'telefono': usuario.telefono,
+                    'direccion': usuario.direccion,
+                    'barrio': usuario.barrio,
+                    'ciudad': usuario.ciudad,
+                    'is_activo': usuario.is_activo,
+                    'fecha_creacion': usuario.fecha_creacion,
+                    'fecha_actualizacion': usuario.fecha_actualizacion})
 
 @usuarios_admin.patch('/api/admin/usuarios/<int:id>')
 def actualizar_usuario(id):

@@ -102,7 +102,9 @@ def agregar_producto_pedido(id_pedido):
 @pedidos_user.get('/api/usuarios/pedidos/<int:pedido_id>/productos')
 def obtener_productos_pedido(pedido_id):
     productos = PedidosProductos.query.filter_by(id_pedidos=pedido_id).all()
-    productos_data = [{"id_productos": p.id_productos, "cantidad": p.cantidad, "precio": p.precio} for p in productos]
+    productos_data = [{"id_productos": p.id_productos, 
+                       "cantidad": p.cantidad, 
+                       "precio": p.precio} for p in productos]
 
     return jsonify(productos_data), 200
 

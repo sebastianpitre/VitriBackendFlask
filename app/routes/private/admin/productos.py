@@ -29,19 +29,24 @@ def guardar_productos():
 def obtener_productos():
     productos = Productos.query.all()
     lista_productos = [{'id_productos': producto.id_productos,
+                        'sku': producto.sku,
                         'nombre': producto.nombre,
                         'descripcion': producto.descripcion,
                         'url_imagen': producto.url_imagen,
                         'url_ficha_tecnica': producto.url_ficha_tecnica,
-                        'unidad_producto': producto.unidad_producto,
-                        'cantidad' : producto.cantidad,
-                        'precio' : producto.precio,
-                        'is_promocion' : producto.is_promocion,
-                        'stock' : producto.stock,
-                        'descuento' : producto.descuento,
-                        'is_activo' : producto.is_activo,
-                        'id_categorias' : producto.id_categorias,
-                        'id_usuarios' : producto.id_usuarios} 
+                        'unidad_producto': producto.unidad_producto.name,
+                        'cantidad': producto.cantidad,
+                        'precio': producto.precio,
+                        'is_promocion': producto.is_promocion,
+                        'stock': producto.stock,
+                        'descuento': producto.descuento,
+                        'is_activo': producto.is_activo,
+                        'id_categorias': producto.id_categorias,
+                        'id_usuarios': producto.id_usuarios,
+                        'fecha_creacion': producto.fecha_creacion,
+                        'fecha_actualizacion': producto.fecha_actualizacion,
+                        'fecha_inicio_descuento': producto.fecha_inicio_descuento,
+                        'fecha_fin_descuento': producto.fecha_fin_descuento}
                         for producto in productos]
     return jsonify(lista_productos)
 
@@ -55,7 +60,7 @@ def obtener_producto_por_id(id):
                         'descripcion': producto.descripcion,
                         'url_imagen': producto.url_imagen,
                         'url_ficha_tecnica': producto.url_ficha_tecnica,
-                        'unidad_producto': producto.unidad_producto,
+                        'unidad_producto': producto.unidad_producto.name,
                         'cantidad' : producto.cantidad,
                         'precio' : producto.precio,
                         'is_promocion' : producto.is_promocion,
@@ -63,7 +68,11 @@ def obtener_producto_por_id(id):
                         'descuento' : producto.descuento,
                         'is_activo' : producto.is_activo,
                         'id_categorias' : producto.id_categorias,
-                        'id_usuarios' : producto.id_usuarios})
+                        'id_usuarios' : producto.id_usuarios,
+                        'fecha_inicio_descuento' : producto.fecha_inicio_descuento,
+                        'fecha_fin_descuento' : producto.fecha_fin_descuento,
+                        'fecha_creacion' : producto.fecha_creacion,
+                        'fecha_actualizacion' : producto.fecha_actualizacion})
 
 @productos_admin.patch('/api/admin/productos/<int:id>')
 def actualizar_producto(id):

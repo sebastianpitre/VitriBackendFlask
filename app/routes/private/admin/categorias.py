@@ -19,7 +19,9 @@ def obtener_categorias():
     categorias = Categorias.query.all()
     lista_categorias = [{'id_categorias': categoria.id_categorias, 
                         'nombre': categoria.nombre, 
-                        'url_imagen': categoria.url_imagen} 
+                        'url_imagen': categoria.url_imagen,
+                        'fecha_creacion' : categoria.fecha_creacion,
+                        'fecha_actualizacion' : categoria.fecha_actualizacion} 
                         for categoria in categorias]
     return jsonify(lista_categorias)
 
@@ -30,7 +32,9 @@ def obtener_categoria_por_id(id):
         return jsonify({'message': 'Categoria no encontrada'}), 404
     return jsonify({'id_categorias': categoria.id_categorias,
                     'nombre': categoria.nombre,
-                    'url_imagen': categoria.url_imagen})
+                    'url_imagen': categoria.url_imagen,
+                    'fecha_creacion' : categoria.fecha_creacion,
+                    'fecha_actualizacion' : categoria.fecha_actualizacion})
 
 @categorias_admin.patch('/api/admin/categorias/<int:id>')
 def actualizar_categoria(id):

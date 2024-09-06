@@ -34,22 +34,22 @@ class Usuarios(Base):
     def set_initial_values(self):
         self.is_activo = True
 
-# 
-    def __init__(self, nombres, apellidos, email, password, rol, tipo_identificacion, identificacion, telefono, direccion, barrio, ciudad, is_activo):
-        
-        self.nombres = nombres
-        self.apellidos = apellidos
-        self.email = email
-        self.password = password
-        self.rol = rol
-        self.tipo_identificacion = tipo_identificacion
-        self.identificacion = identificacion
-        self.telefono = telefono
-        self.direccion = direccion
-        self.barrio = barrio
-        self.ciudad = ciudad
-        self.is_activo = is_activo
 
+    def to_dict(self):
+        return {
+            "nombre": self.nombre,
+            "apellidos": self.apellidos,
+            "email": self.email,
+            "rol": self.rol.name,
+            "tipo_identificacion": self.tipo_identificacion.name,
+            "identificacion": self.identificacion,
+            "telefono": self.telefono,
+            "direccion": self.direccion,
+            "barrio": self.barrio,
+            "ciudad": self.ciudad,
+            "fecha_creacion": self.fecha_creacion,
+            "fecha_actualizacion": self.fecha_actualizacion
+        }
 
     def __repr__(self):
         return f'<Nombres {self.nombres!r}>, <Apellidos {self.apellidos!r}, <Password {self.password!r}, <TipoIdentificacion {self.tipo_identificacion!r}, <Identificacion {self.identificacion!r}, <Telefono {self.telefono!r}, <Direccion {self.direccion!r},<Barrio {self.barrio!r},<Ciudad {self.ciudad!r},<IsActivo {self.is_activo!r},<IsStock {self.stock!r},<IsActivo {self.isActivo!r}>'

@@ -17,11 +17,14 @@ class Pagos(Base):
     pedidos: Mapped[list["Pedidos"]] = relationship(back_populates="pagos") #type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self,metodo_pago, monto, numero_transaccion, fecha_pago):
-        self.metodo_pago = metodo_pago
-        self.monto = monto
-        self.numero_transaccion = numero_transaccion
-        self.fecha_pago = fecha_pago
+
+    def __todict__(self):
+        return {
+            'metodo_pago': self.metodo_pago,
+            'monto': self.monto,
+            'numero_transaccion': self.numero_transaccion,
+            'fecha_pago': self.fecha_pago
+        }
 
     def __repr__(self):
         return f'<id {self.id!r}>, <metodo_pago {self.metodo_pago!r}, <monto {self.monto!r}, <numero_transaccion {self.numero_transaccion!r}, <fecha_pago {self.fecha_pago!r}>'

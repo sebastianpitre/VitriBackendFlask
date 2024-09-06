@@ -1,5 +1,6 @@
 from flask import Flask
 from common.config.db import db
+from flask_cors import CORS
 
 from models import Productos, Categorias, Pedidos, PedidosProductos, Pagos, Usuarios  # Importación de los modelos
 
@@ -12,6 +13,7 @@ from routes.authentication.autenticacion import autenticacion  # Importación de
 # Creación de la aplicación Flask
 # -------------------------------------------------------------------------------------------------------- #
 app = Flask(__name__)
+CORS(app)
 
 # -------------------------------------------------------------------------------------------------------- #
 # Configuración de la conexión de SQLAlchemy a la Base de Datos

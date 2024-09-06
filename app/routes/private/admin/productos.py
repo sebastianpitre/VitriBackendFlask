@@ -1,10 +1,15 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
+from common.utils.auth import role_required
+from common.utils.enums.roles import Roles
 from common.config.db import db
 from models.productos import Productos
 
 productos_admin = Blueprint('productos_admin', __name__)
 
 @productos_admin.post("/api/admin/productos")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def guardar_productos():
     data = request.json
     nuevo_producto = Productos(sku=data['sku'], 
@@ -26,6 +31,8 @@ def guardar_productos():
     return jsonify({'message': 'Nueva producto creada correctamente'}), 201
 
 @productos_admin.get("/api/admin/productos")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def obtener_productos():
     productos = Productos.query.all()
     lista_productos = [{'id_productos': producto.id_productos,
@@ -51,6 +58,8 @@ def obtener_productos():
     return jsonify(lista_productos)
 
 @productos_admin.get("/api/admin/productos/<int:id>")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def obtener_producto_por_id(id):
     producto = Productos.query.get(id)
     if not producto:
@@ -75,6 +84,8 @@ def obtener_producto_por_id(id):
                         'fecha_actualizacion' : producto.fecha_actualizacion})
 
 @productos_admin.patch('/api/admin/productos/<int:id>')
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def actualizar_producto(id):
     producto = Productos.query.get(id)
     if not producto:
@@ -97,6 +108,8 @@ def actualizar_producto(id):
     return jsonify({'message': 'Producto actualizada satisfactoriamente'}), 200
 
 @productos_admin.delete('/api/admin/productos/<int:id>')
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def eliminar_producto(id):
     producto = Productos.query.get(id)
     if not producto:

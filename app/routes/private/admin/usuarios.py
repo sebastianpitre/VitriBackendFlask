@@ -1,10 +1,15 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
+from common.utils.auth import role_required
+from common.utils.enums.roles import Roles
 from common.config.db import db
 from models.usuarios import Usuarios
 
 usuarios_admin = Blueprint('usuarios_admin', __name__)
 
 @usuarios_admin.post("/api/admin/usarios/registro")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def guardar_usuarios():
     data = request.json
     nuevo_registro = Usuarios(nombres=data['nombres'], 
@@ -25,6 +30,8 @@ def guardar_usuarios():
     return jsonify({'message': 'Nuevo usuario creado correctamente'}), 201
 
 @usuarios_admin.get("/api/admin/usuarios")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def obtener_usuarios():
     usuarios = Usuarios.query.all()
     lista_usuarios = [{'id_usuarios': usuario.id_usuarios,
@@ -46,6 +53,8 @@ def obtener_usuarios():
     return jsonify(lista_usuarios)
 
 @usuarios_admin.get("/api/admin/usuarios/<int:id>")
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def obtener_usuario_por_id(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -67,6 +76,8 @@ def obtener_usuario_por_id(id):
                     'fecha_actualizacion': usuario.fecha_actualizacion})
 
 @usuarios_admin.patch('/api/admin/usuarios/<int:id>')
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def actualizar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -89,6 +100,8 @@ def actualizar_usuario(id):
     return jsonify({'message': 'Usuario actualizado satisfactoriamente'}), 200
 
 @usuarios_admin.delete('/api/admin/usuarios/<int:id>')
+@jwt_required() 
+@role_required([Roles.ADMIN])
 def eliminar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:

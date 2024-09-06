@@ -1,4 +1,7 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
+from common.utils.auth import role_required
+from common.utils.enums.roles import Roles
 from common.utils.enums.estado_pedido import EstadoPedido
 from common.config.db import db
 from models import Pedidos, PedidosProductos, Productos
@@ -6,6 +9,8 @@ from models import Pedidos, PedidosProductos, Productos
 pedidos_user = Blueprint('pedidos_user', __name__)
 
 @pedidos_user.post('/api/usuarios/pedidos')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def crear_pedido():
     
     data = request.get_json()
@@ -34,6 +39,8 @@ def crear_pedido():
 
 # Obtener un pedido específico
 @pedidos_user.get('/api/usuarios/pedidos/<int:pedido_id>')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def obtener_pedido(pedido_id):
     pedido = Pedidos.query.get(pedido_id)
     if not pedido:
@@ -54,6 +61,8 @@ def obtener_pedido(pedido_id):
 
 # Obtener todos los pedidos de un usuario
 @pedidos_user.get('/api/usuarios/<int:usuario_id>/pedidos')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def obtener_pedidos_por_usuario(usuario_id):
     pedidos = Pedidos.query.filter_by(id_usuarios=usuario_id).all()
     pedidos_data = []
@@ -74,6 +83,8 @@ def obtener_pedidos_por_usuario(usuario_id):
 
 # Actualizar el estado de un pedido
 @pedidos_user.patch('/api/usuarios/pedidos/<int:id>')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def actualizar_estado_pedido(id):
     pedido = Pedidos.query.get_or_404(id)
     data = request.json
@@ -83,6 +94,8 @@ def actualizar_estado_pedido(id):
 
 # Agregar productos a un pedido
 @pedidos_user.post('/api/usuarios/pedidos/<int:id_pedido>/productos')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def agregar_producto_pedido(id_pedido):
     pedido = Pedidos.query.get_or_404(id_pedido)
     data = request.json
@@ -100,6 +113,8 @@ def agregar_producto_pedido(id_pedido):
 
 # Obtener productos de un pedido
 @pedidos_user.get('/api/usuarios/pedidos/<int:pedido_id>/productos')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def obtener_productos_pedido(pedido_id):
     productos = PedidosProductos.query.filter_by(id_pedidos=pedido_id).all()
     productos_data = [{"id_productos": p.id_productos, 
@@ -110,6 +125,8 @@ def obtener_productos_pedido(pedido_id):
 
 # Eliminar un producto de un pedido
 @pedidos_user.delete('/api/usuarios/pedidos/<int:id_pedido>/productos/<int:id_producto>')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def eliminar_producto_pedido(id_pedido, id_producto):
     pedido_producto = PedidosProductos.query.filter_by(id_pedidos=id_pedido, id_productos=id_producto).first_or_404()
     pedido = Pedidos.query.get_or_404(id_pedido)
@@ -120,6 +137,8 @@ def eliminar_producto_pedido(id_pedido, id_producto):
 
 # Actualizar un producto en un pedido
 @pedidos_user.patch('/api/usuarios/pedidos/<int:id_pedido>/productos/<int:id_producto>')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def actualizar_cantidad_producto_pedido(id_pedido, id_producto):
     pedido_producto = PedidosProductos.query.filter_by(id_pedidos=id_pedido, id_productos=id_producto).first_or_404()
     pedido = Pedidos.query.get_or_404(id_pedido)

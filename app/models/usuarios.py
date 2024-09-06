@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, String, Boolean, Enum, DateTime, ForeignKey, func
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from common.utils.enums.roles import Roles
 from common.config.db import Base 
@@ -34,6 +35,13 @@ class Usuarios(Base):
     def set_initial_values(self):
         self.is_activo = True
 
+        # Método para establecer la contraseña encriptada
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    # Método para verificar la contraseña
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def to_dict(self):
         return {
@@ -50,6 +58,6 @@ class Usuarios(Base):
             "fecha_creacion": self.fecha_creacion,
             "fecha_actualizacion": self.fecha_actualizacion
         }
-
+    
     def __repr__(self):
         return f'<Nombres {self.nombres!r}>, <Apellidos {self.apellidos!r}, <Password {self.password!r}, <TipoIdentificacion {self.tipo_identificacion!r}, <Identificacion {self.identificacion!r}, <Telefono {self.telefono!r}, <Direccion {self.direccion!r},<Barrio {self.barrio!r},<Ciudad {self.ciudad!r},<IsActivo {self.is_activo!r},<IsStock {self.stock!r},<IsActivo {self.isActivo!r}>'

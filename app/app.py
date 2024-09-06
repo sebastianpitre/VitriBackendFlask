@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
+from datetime import timedelta
 from common.config.db import db
 from flask_cors import CORS
 
@@ -21,6 +23,19 @@ CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:1234@localhost/vitridb?charset=utf8mb4"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True  # Habilitar el echo para ver las sentencias SQL
+
+# -------------------------------------------------------------------------------------------------------- #
+# JSon Web Token (JWT) configuracion
+# -------------------------------------------------------------------------------------------------------- #
+app.config['JWT_SECRET_KEY'] = 'iDJa44PZXLrQ6X396ZKYE8WGXG4Gt2LFE3fyV0TinuTtBnzabGhp6167VFwJPuz2qbv3M8ueG78PTTryHKyacfUc28T9Pm92aztY'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=2)
+# Configurar el uso de cookies HTTPOnly
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Usar cookies para el token
+app.config['JWT_COOKIE_SECURE'] = False          # Usar solo sobre HTTPS en producción
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/'      # Ruta donde se usará la cookie
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'  # Ruta para las cookies de refresh token
+
+jwt = JWTManager(app)
 
 # -------------------------------------------------------------------------------------------------------- #
 # Inicialización de SQLAlchemy con la aplicación

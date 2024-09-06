@@ -1,6 +1,6 @@
 from enum import Enum as pyEnum
 
 class Roles (pyEnum):
-    ADMINISTRADOR = "ADMIN"
-    MODERADOR = "MOD"
+    ADMIN = "ADMIN"
+    MOD = "MOD"
     CLIENTE = "CLIENTE"

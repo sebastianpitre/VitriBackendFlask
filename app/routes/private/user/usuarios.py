@@ -1,10 +1,15 @@
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
+from common.utils.auth import role_required
+from common.utils.enums.roles import Roles
 from common.config.db import db
 from models.usuarios import Usuarios
 
 usuarios_user = Blueprint('usuarios_user', __name__)
 
 @usuarios_user.get("/api/usuarios/<int:id>")
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def obtener_usuario_por_id(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -23,6 +28,8 @@ def obtener_usuario_por_id(id):
                       'ciudad': usuario.ciudad})
 
 @usuarios_user.patch('/api/usuarios/<int:id>')
+@jwt_required() 
+@role_required([Roles.CLIENTE])
 def actualizar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:

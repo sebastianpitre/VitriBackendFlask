@@ -45,7 +45,7 @@ def obtener_pedido(pedido_id):
     pedido_data = {
         "id_pedido": pedido.id_pedidos,
         "monto_total": pedido.monto_total,
-        "estado_pedido": pedido.estado_pedido.name,
+        "estado_pedido": pedido.estado_pedido.value,
         "fecha_creacion": pedido.fecha_creacion,
         "productos": productos_data
     }
@@ -65,7 +65,7 @@ def obtener_pedidos_por_usuario(usuario_id):
         pedidos_data.append({
             "id_pedido": pedido.id_pedidos,
             "monto_total": pedido.monto_total,
-            "estado_pedido": pedido.estado_pedido.name,
+            "estado_pedido": pedido.estado_pedido.value,
             "fecha_creacion": pedido.fecha_creacion,
             "productos": productos_data
         })

@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.productos import Productos
 
-productos = Blueprint('productos', __name__)
+productos_public = Blueprint('productos_public', __name__)
 
-@productos.get("/api/publico/productos")
+@productos_public.get("/api/publico/productos")
 def obtener_productos():
     productos = Productos.query.all()
     lista_productos = [{'id_productos': producto.id_productos,
@@ -24,7 +24,7 @@ def obtener_productos():
                         for producto in productos]
     return jsonify(lista_productos)
 
-@productos.get("/api/publico/productos/<int:id>")
+@productos_public.get("/api/publico/productos/<int:id>")
 def obtener_producto_por_id(id):
     producto = Productos.query.get(id)
     if not producto:

@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.usuarios import Usuarios
 
-usuarios = Blueprint('usuarios', __name__)
+usuarios_admin = Blueprint('usuarios_admin', __name__)
 
-@usuarios.post("/api/admin/usarios/registro")
+@usuarios_admin.post("/api/admin/usarios/registro")
 def guardar_usuarios():
     data = request.json
     nuevo_registro = Usuarios(nombres=data['nombres'], 
@@ -24,7 +24,7 @@ def guardar_usuarios():
 
     return jsonify({'message': 'Nuevo usuario creado correctamente'}), 201
 
-@usuarios.get("/api/admin/usuarios")
+@usuarios_admin.get("/api/admin/usuarios")
 def obtener_usuarios():
     usuarios = Usuarios.query.all()
     lista_usuarios = [{'id_usuarios': usuario.id_usuarios,
@@ -43,7 +43,7 @@ def obtener_usuarios():
                     for usuario in usuarios]
     return jsonify(lista_usuarios)
 
-@usuarios.get("/api/admin/usuarios/<int:id>")
+@usuarios_admin.get("/api/admin/usuarios/<int:id>")
 def obtener_usuario_por_id(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -62,7 +62,7 @@ def obtener_usuario_por_id(id):
                       'ciudad': usuario.ciudad,
                       'is_activo': usuario.is_activo})
 
-@usuarios.patch('/api/admin/usuarios/<int:id>')
+@usuarios_admin.patch('/api/admin/usuarios/<int:id>')
 def actualizar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -84,7 +84,7 @@ def actualizar_usuario(id):
     db.session.commit()
     return jsonify({'message': 'Usuario actualizado satisfactoriamente'}), 200
 
-@usuarios.delete('/api/admin/usuarios/<int:id>')
+@usuarios_admin.delete('/api/admin/usuarios/<int:id>')
 def eliminar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:

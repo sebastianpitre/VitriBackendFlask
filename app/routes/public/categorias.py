@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.categorias import Categorias
 
-categorias = Blueprint('categorias', __name__)
+categorias_public = Blueprint('categorias_public', __name__)
 
-@categorias.get("/api/publico/categorias")
+@categorias_public.get("/api/publico/categorias")
 def obtener_categorias():
     categorias = Categorias.query.all()
     lista_categorias = [{'id_categorias': categoria.id_categorias, 'nombre': categoria.nombre, 
@@ -13,7 +13,7 @@ def obtener_categorias():
                         for categoria in categorias]
     return jsonify(lista_categorias)
 
-@categorias.get("/api/publico/categorias/<int:id>")
+@categorias_public.get("/api/publico/categorias/<int:id>")
 def obtener_categoria_por_id(id):
     categoria = Categorias.query.get(id)
     if not categoria:

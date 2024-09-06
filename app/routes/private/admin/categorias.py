@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.categorias import Categorias
 
-categorias = Blueprint('categorias', __name__)
+categorias_admin = Blueprint('categorias_admin', __name__)
 
-@categorias.post("/api/admin/categorias")
+@categorias_admin.post("/api/admin/categorias")
 def guardar_categorias():
     data = request.json
     nueva_categoria = Categorias(nombre=data['nombre'], 
@@ -15,7 +15,7 @@ def guardar_categorias():
 
     return jsonify({'message': 'Nueva categoria creada correctamente'}), 201
 
-@categorias.get("/api/admin/categorias")
+@categorias_admin.get("/api/admin/categorias")
 def obtener_categorias():
     categorias = Categorias.query.all()
     lista_categorias = [{'id_categorias': categoria.id_categorias, 'nombre': categoria.nombre, 
@@ -24,7 +24,7 @@ def obtener_categorias():
                         for categoria in categorias]
     return jsonify(lista_categorias)
 
-@categorias.get("/api/admin/categorias/<int:id>")
+@categorias_admin.get("/api/admin/categorias/<int:id>")
 def obtener_categoria_por_id(id):
     categoria = Categorias.query.get(id)
     if not categoria:
@@ -34,7 +34,7 @@ def obtener_categoria_por_id(id):
                     'descripcion': categoria.descripcion,
                     'url_imagen': categoria.url_imagen})
 
-@categorias.patch('/api/admin/categorias/<int:id>')
+@categorias_admin.patch('/api/admin/categorias/<int:id>')
 def actualizar_categoria(id):
     categoria = Categorias.query.get(id)
     if not categoria:
@@ -47,7 +47,7 @@ def actualizar_categoria(id):
     db.session.commit()
     return jsonify({'message': 'Categoria actualizada satisfactoriamente'}), 200
 
-@categorias.delete('/api/admin/categorias/<int:id>')
+@categorias_admin.delete('/api/admin/categorias/<int:id>')
 def eliminar_categoria(id):
     categoria = Categorias.query.get(id)
     if not categoria:

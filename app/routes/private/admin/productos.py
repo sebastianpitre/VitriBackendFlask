@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.productos import Productos
 
-productos = Blueprint('productos', __name__)
+productos_admin = Blueprint('productos_admin', __name__)
 
-@productos.post("/api/admin/productos")
+@productos_admin.post("/api/admin/productos")
 def guardar_productos():
     data = request.json
     nuevo_producto = Productos(sku=data['sku'], 
@@ -25,7 +25,7 @@ def guardar_productos():
 
     return jsonify({'message': 'Nueva producto creada correctamente'}), 201
 
-@productos.get("/api/admin/productos")
+@productos_admin.get("/api/admin/productos")
 def obtener_productos():
     productos = Productos.query.all()
     lista_productos = [{'id_productos': producto.id_productos,
@@ -45,7 +45,7 @@ def obtener_productos():
                         for producto in productos]
     return jsonify(lista_productos)
 
-@productos.get("/api/admin/productos/<int:id>")
+@productos_admin.get("/api/admin/productos/<int:id>")
 def obtener_producto_por_id(id):
     producto = Productos.query.get(id)
     if not producto:
@@ -65,7 +65,7 @@ def obtener_producto_por_id(id):
                         'id_categorias' : producto.id_categorias,
                         'id_usuarios' : producto.id_usuarios})
 
-@productos.patch('/api/admin/productos/<int:id>')
+@productos_admin.patch('/api/admin/productos/<int:id>')
 def actualizar_producto(id):
     producto = Productos.query.get(id)
     if not producto:
@@ -87,7 +87,7 @@ def actualizar_producto(id):
     db.session.commit()
     return jsonify({'message': 'Producto actualizada satisfactoriamente'}), 200
 
-@productos.delete('/api/admin/productos/<int:id>')
+@productos_admin.delete('/api/admin/productos/<int:id>')
 def eliminar_producto(id):
     producto = Productos.query.get(id)
     if not producto:

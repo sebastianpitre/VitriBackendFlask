@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from common.config.db import db
 from models.usuarios import Usuarios
 
-usuarios = Blueprint('usuarios', __name__)
+usuarios_user = Blueprint('usuarios_user', __name__)
 
-@usuarios.get("/api/usuarios/<int:id>")
+@usuarios_user.get("/api/usuarios/<int:id>")
 def obtener_usuario_por_id(id):
     usuario = Usuarios.query.get(id)
     if not usuario:
@@ -22,7 +22,7 @@ def obtener_usuario_por_id(id):
                       'barrio': usuario.barrio,
                       'ciudad': usuario.ciudad})
 
-@usuarios.patch('/api/usuarios/<int:id>')
+@usuarios_user.patch('/api/usuarios/<int:id>')
 def actualizar_usuario(id):
     usuario = Usuarios.query.get(id)
     if not usuario:

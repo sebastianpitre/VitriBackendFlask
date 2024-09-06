@@ -7,7 +7,6 @@ class Categorias(Base):
 
     id_categorias: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(255), nullable=False)
-    descripcion: Mapped[str] = mapped_column(String(1000))
     url_imagen: Mapped[str] = mapped_column(String(255))
     fecha_creacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     fecha_actualizacion: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
@@ -19,9 +18,8 @@ class Categorias(Base):
     productos: Mapped[list["Productos"]] = relationship( back_populates="categorias", cascade="all, delete-orphan") # type: ignore
     #----------------------------------------------------------------------------------------------#
 
-    def __init__(self, nombre, descripcion, url_imagen):
+    def __init__(self, nombre,  url_imagen):
         self.nombre = nombre
-        self.descripcion = descripcion
         self.url_imagen = url_imagen
 
     def __repr__(self):

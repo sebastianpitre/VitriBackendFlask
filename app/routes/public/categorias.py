@@ -7,8 +7,8 @@ categorias_public = Blueprint('categorias_public', __name__)
 @categorias_public.get("/api/publico/categorias")
 def obtener_categorias():
     categorias = Categorias.query.all()
-    lista_categorias = [{'id_categorias': categoria.id_categorias, 'nombre': categoria.nombre, 
-                        'descripcion': categoria.descripcion,
+    lista_categorias = [{'id_categorias': categoria.id_categorias,
+                        'nombre': categoria.nombre, 
                         'url_imagen': categoria.url_imagen} 
                         for categoria in categorias]
     return jsonify(lista_categorias)
@@ -20,5 +20,4 @@ def obtener_categoria_por_id(id):
         return jsonify({'message': 'Categoria no encontrada'}), 404
     return jsonify({'id_categorias': categoria.id_categorias,
                     'nombre': categoria.nombre,
-                    'descripcion': categoria.descripcion,
                     'url_imagen': categoria.url_imagen})

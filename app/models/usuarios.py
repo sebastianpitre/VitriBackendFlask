@@ -13,8 +13,8 @@ class Usuarios(Base):
     apellidos: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
-    rol: Mapped[Roles] = mapped_column(Enum(Roles), nullable=False)
-    tipo_identificacion: Mapped[TipoIdentificacion] = mapped_column(Enum(TipoIdentificacion), nullable=False)
+    rol: Mapped[Roles] = mapped_column(Enum(Roles), nullable=False, values_callable=lambda obj: [e.value for e in obj], default=Roles.CLIENTE)
+    tipo_identificacion: Mapped[TipoIdentificacion] = mapped_column(Enum(TipoIdentificacion, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     identificacion: Mapped[str] = mapped_column(String(255), nullable=False)
     telefono: Mapped[str] = mapped_column(String(255), nullable=False)
     direccion: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -48,8 +48,7 @@ class Usuarios(Base):
             "nombre": self.nombre,
             "apellidos": self.apellidos,
             "email": self.email,
-            "rol": self.rol.name,
-            "tipo_identificacion": self.tipo_identificacion.name,
+            "tipo_identificacion": self.tipo_identificacion.value,
             "identificacion": self.identificacion,
             "telefono": self.telefono,
             "direccion": self.direccion,

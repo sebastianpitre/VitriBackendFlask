@@ -15,8 +15,6 @@ def registro_usuario():
             nombres=data['nombres'],
             apellidos=data['apellidos'],
             email=data['email'],
-            password=data['password'],
-            rol=data['rol'],
             tipo_identificacion=data['tipo_identificacion'],
             identificacion=data['identificacion'],
             telefono=data['telefono'],
@@ -24,18 +22,17 @@ def registro_usuario():
             barrio=data['barrio'],
             ciudad=data['ciudad']
         )
+        nuevo_registro.set_password(data['password'])
         db.session.add(nuevo_registro)
         db.session.commit()
-    except IntegrityError:
+    except IntegrityError as e:
         db.session.rollback()
-        return jsonify({'message': 'Error: El email ya está registrado'}), 400
+        return jsonify({'message': f'Error: {str(e)}'}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Error en el servidor'}), 500
+        return jsonify({'message': f'Error en el servidor: {str(e)}'}), 500
 
     return jsonify({'message': 'Nuevo usuario creado correctamente'}), 201
-
-
 
 @autenticacion.post('/api/auth/login')
 def login():
@@ -46,19 +43,14 @@ def login():
     user = Usuarios.query.filter_by(email=email).first()
 
     if user and user.check_password(password):
-
-        access_token = create_access_token(identity={'id': user.id_usuarios, 'rol': user.rol.value})
-
-        response = jsonify({"msg": "Login exitoso"})
-        set_access_cookies(response, access_token)
-        return response, 200
+        # Incluimos el rol en el token
+        access_token = create_access_token(identity=user.id_usuarios, additional_claims={'rol': user.rol.value})
+        return jsonify(access_token=access_token), 200
     else:
         return jsonify({"msg": "Credenciales inválidas"}), 401
-
 
 @autenticacion.post('/api/auth/logout')
 @jwt_required()
 def logout():
-    response = jsonify({"msg": "Logout exitoso"})
-    unset_jwt_cookies(response) 
-    return response, 200
+    # Con tokens Bearer, el logout se maneja del lado del cliente
+    return jsonify({"msg": "Logout exitoso"}), 200

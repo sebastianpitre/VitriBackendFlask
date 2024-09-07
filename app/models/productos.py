@@ -23,7 +23,7 @@ class Productos(Base):
     descripcion: Mapped[str] = mapped_column(String(1000))
     url_imagen: Mapped[str] = mapped_column(String(255))
     url_ficha_tecnica: Mapped[str] = mapped_column(String(255))
-    unidad_producto: Mapped[UnidadProducto] = mapped_column(Enum(UnidadProducto), nullable=False)
+    unidad_producto: Mapped[str] = mapped_column(Enum(UnidadProducto, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     cantidad: Mapped[int] = mapped_column(Integer)
     precio: Mapped[float] = mapped_column(Float, nullable=False)
     is_promocion: Mapped[bool] = mapped_column(Boolean, nullable=False)
@@ -56,7 +56,7 @@ class Productos(Base):
             "descripcion": self.descripcion,
             "url_imagen": self.url_imagen,
             "url_ficha_tecnica": self.url_ficha_tecnica,
-            "unidad_producto": self.unidad_producto.name,
+            "unidad_producto": self.unidad_producto.value,
             "cantidad": self.cantidad,
             "precio": self.precio,
             "is_promocion": self.is_promocion,

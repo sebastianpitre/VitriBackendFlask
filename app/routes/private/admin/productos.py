@@ -35,7 +35,7 @@ def guardar_productos():
 @role_required([Roles.ADMIN])
 def obtener_productos():
     productos = Productos.query.all()
-    lista_productos = [{'id_productos': producto.id_productos,
+    lista_productos = [{'id': producto.id,
                         'sku': producto.sku,
                         'nombre': producto.nombre,
                         'descripcion': producto.descripcion,
@@ -64,7 +64,7 @@ def obtener_producto_por_id(id):
     producto = Productos.query.get(id)
     if not producto:
         return jsonify({'message': 'Producto no encontrada'}), 404
-    return jsonify({'id_productos': producto.id_productos,
+    return jsonify({'id': producto.id,
                         'nombre': producto.nombre,
                         'descripcion': producto.descripcion,
                         'url_imagen': producto.url_imagen,
